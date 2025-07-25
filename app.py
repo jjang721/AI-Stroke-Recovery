@@ -1,12 +1,13 @@
 import streamlit as st
-from langchain_community.vectorstores import FAISS
+from langchain_community.vectorstores import Chroma
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
+from dotenv import load_dotenv, find_dotenv
 
-# ✅ Get OpenAI API key from Streamlit secrets
-api_key = st.secrets["OPENAI_API_KEY"]
+# Load environment
+dotenv_path = find_dotenv()
+load_dotenv(dotenv_path, override=True)
 
-# Paths and template
 CHROMA_PATH = "chroma"
 PROMPT_TEMPLATE = """
 Using this context, find an answer!:
@@ -18,16 +19,15 @@ Using this context, find an answer!:
 Answer my question: {question}
 """
 
-# ✅ Use the API key in LangChain components
-embeddings = OpenAIEmbeddings(openai_api_key=api_key)
-db = FAISS.load_local(CHROMA_PATH, embeddings, allow_dangerous_deserialization=True)
-model = ChatOpenAI(api_key=api_key)
+embeddings = OpenAIEmbeddings()
+db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embeddings)
+model = ChatOpenAI()
 prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
 
-# Streamlit UI
 st.set_page_config(page_title="🧠 Stroke Recovery Assistant")
 st.title("🧠 Stroke Recovery Assistant")
 st.write("Ask a question about stroke rehab, and I’ll pull answers from your knowledge base!")
+
 
 query = st.text_input("❓ Enter your question:")
 
