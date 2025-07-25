@@ -1,5 +1,5 @@
 import streamlit as st
-from langchain_community.vectorstores import Chroma
+from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 
@@ -20,7 +20,7 @@ Answer my question: {question}
 
 # ✅ Use the API key in LangChain components
 embeddings = OpenAIEmbeddings(openai_api_key=api_key)
-db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embeddings)
+db = FAISS.load_local(CHROMA_PATH, embeddings)
 model = ChatOpenAI(api_key=api_key)
 prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
 
