@@ -20,7 +20,7 @@ Answer my question: {question}
 
 # ✅ Use the API key in LangChain components
 embeddings = OpenAIEmbeddings(openai_api_key=api_key)
-db = FAISS.load_local(CHROMA_PATH, embeddings)
+db = FAISS.load_local(CHROMA_PATH, embeddings, allow_dangerous_deserialization=True)
 model = ChatOpenAI(api_key=api_key)
 prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
 
