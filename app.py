@@ -25,14 +25,14 @@ model = ChatOpenAI()
 prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
 
 st.set_page_config(page_title="🧠 Stroke Recovery Assistant")
-st.title("🧠 Stroke Recovery Assistant")
+st.title("Stroke Recovery Assistant")
 st.write("Ask a question about stroke rehab, and I’ll pull answers from your knowledge base!")
 
 
-query = st.text_input("❓ Enter your question:")
+query = st.text_input("Enter your question:")
 
 if query:
-    with st.spinner("🔍 Searching for answers..."):
+    with st.spinner("Searching for answers..."):
         results = db.similarity_search_with_relevance_scores(query, k=3)
 
         if len(results) == 0 or results[0][1] < 0.7:
@@ -48,7 +48,7 @@ if query:
             with st.expander("📄 Context"):
                 st.code(context_text[:1000] + "..." if len(context_text) > 1000 else context_text)
 
-            sources = [doc.metadata.get("source", "Unknown") for doc, _ in results]
-            st.markdown("### 📚 Sources")
-            for src in set(sources):
-                st.markdown(f"- `{src}`")
+            # sources = [doc.metadata.get("source", "Unknown") for doc, _ in results]
+            # st.markdown("### 📚 Sources")
+            # for src in set(sources):
+            #     st.markdown(f"- `{src}`")
