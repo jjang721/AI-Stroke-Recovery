@@ -42,13 +42,8 @@ if query:
             prompt = prompt_template.format(context=context_text, question=query)
             response_text = model.predict(prompt)
 
-            st.markdown("### 💬 Answer")
+            st.markdown("### Your chatbot answer:")
             st.write(response_text)
 
-            with st.expander("📄 Context"):
+            with st.expander("Context from scientific papers"):
                 st.code(context_text[:1000] + "..." if len(context_text) > 1000 else context_text)
-
-            # sources = [doc.metadata.get("source", "Unknown") for doc, _ in results]
-            # st.markdown("### 📚 Sources")
-            # for src in set(sources):
-            #     st.markdown(f"- `{src}`")
