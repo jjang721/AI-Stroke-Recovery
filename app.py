@@ -26,7 +26,7 @@ prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
 
 st.set_page_config(page_title="🧠 Stroke Recovery Assistant")
 st.title("Stroke Recovery Assistant")
-st.write("Ask a question about stroke rehab, and I’ll pull answers from your knowledge base!")
+st.write("Ask a question about stroke rehab, and I’ll pull answers from sceintific papers! ")
 
 
 query = st.text_input("Enter your question:")
