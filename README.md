@@ -13,11 +13,12 @@ Features
 
 5. Deployed Web App – Built with Streamlit for accessibility
 
-🛠️ Tech Stack
+Tech Stack
+
 Layer	Tools & Frameworks
-Frontend	Streamlit
-Backend	Python, LangChain
-AI Model	OpenAI API (Embeddings + Chat Models)
-Database	Chroma Vector DB
-Deployment	Streamlit Cloud / Vercel
-Version Control	Git, GitHub
+Streamlit
+Python, LangChain
+OpenAI API (Embeddings + Chat Models)
+Chroma Vector DB
+Streamlit Cloud / Vercel
+Git, GitHub
