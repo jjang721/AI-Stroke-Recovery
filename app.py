@@ -31,11 +31,22 @@ st.write("Ask a question about stroke rehab, and I’ll pull answers from sceint
 
 query = st.text_input("Enter your question:")
 
+st.markdown(
+    """
+    <style>
+        .stApp {
+            background-color: #fff9c4;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 if query:
     with st.spinner("Searching for answers..."):
         results = db.similarity_search_with_relevance_scores(query, k=3)
 
-        if len(results) == 0 or results[0][1] < 0.7:
+        if len(results) == 0 or results[0][1] < 0.5:
             st.error("No good matches found. Try rewording your question.")
         else:
             context_text = "\n\n---\n\n".join([doc.page_content for doc, _ in results])
