@@ -40,12 +40,15 @@ st.set_page_config(page_title="🧠 Stroke Recovery Assistant", page_icon="🧠"
 st.markdown("""
 <style>
     .stApp {
-        background-color: #f5f7fa;
-        font-family: 'Segoe UI', sans-serif;
+        background-color: #fff9c4 !important; /* light yellow */
+        color: #000 !important;               /* black text */
+    }
+    body, h1, h2, h3, h4, h5, h6, p, div, span {
+        color: #000 !important;               /* force black text everywhere */
     }
     h1 {
         text-align: center;
-        color: #2c3e50;
+        color: #000 !important;
         padding-bottom: 10px;
     }
     .user-bubble {
@@ -57,6 +60,7 @@ st.markdown("""
         max-width: 80%;
         margin-left: auto;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        color: #000 !important;
     }
     .ai-bubble {
         background-color: #ffffff;
@@ -68,11 +72,14 @@ st.markdown("""
         margin-right: auto;
         border: 1px solid #ddd;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        color: #000 !important;
     }
     .stTextInput > div > div > input {
         border-radius: 10px;
         border: 1px solid #ccc;
         padding: 8px;
+        color: #000 !important;
+        background-color: #fff !important;
     }
 </style>
 """, unsafe_allow_html=True)
