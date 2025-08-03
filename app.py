@@ -7,7 +7,6 @@ from dotenv import load_dotenv, find_dotenv
 # ========================
 # ENVIRONMENT SETUP
 # ========================
-
 dotenv_path = find_dotenv()
 load_dotenv(dotenv_path, override=True)
 
@@ -36,20 +35,17 @@ prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
 st.set_page_config(page_title="🧠 Stroke Recovery Assistant", page_icon="🧠", layout="wide")
 
 # ========================
-# CUSTOM CSS STYLES
+# CUSTOM STYLES
 # ========================
 st.markdown("""
 <style>
     .stApp {
-        background-color: #fff9c4 !important; /* light yellow */
-        color: #000 !important;               /* black text */
-    }
-    body, h1, h2, h3, h4, h5, h6, p, div, span {
-        color: #000 !important;               /* force black text everywhere */
+        background-color: #f5f7fa;
+        font-family: 'Segoe UI', sans-serif;
     }
     h1 {
         text-align: center;
-        color: #000 !important;
+        color: #2c3e50;
         padding-bottom: 10px;
     }
     .user-bubble {
@@ -61,7 +57,6 @@ st.markdown("""
         max-width: 80%;
         margin-left: auto;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        color: #000 !important;
     }
     .ai-bubble {
         background-color: #ffffff;
@@ -73,14 +68,11 @@ st.markdown("""
         margin-right: auto;
         border: 1px solid #ddd;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        color: #000 !important;
     }
     .stTextInput > div > div > input {
         border-radius: 10px;
         border: 1px solid #ccc;
         padding: 8px;
-        color: #000 !important;
-        background-color: #fff !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -96,33 +88,16 @@ st.markdown("<p style='text-align:center;color:#555;'>Ask a question about strok
 # ========================
 if "messages" not in st.session_state:
     st.session_state.messages = []
-if "last_sources" not in st.session_state:
-    st.session_state.last_sources = []
 
 # ========================
-# CHAT DISPLAY (keeps conversation going)
+# USER INPUT
 # ========================
-chat_container = st.container()
-
-with chat_container:
-    for msg in st.session_state.messages:
-        if msg["role"] == "user":
-            st.markdown(f"<div class='user-bubble'><b>You:</b> {msg['content']}</div>", unsafe_allow_html=True)
-        else:
-            st.markdown(f"<div class='ai-bubble'><b>AI:</b> {msg['content']}</div>", unsafe_allow_html=True)
-
-# Auto-scroll to bottom
-st.markdown("<script>window.scrollTo(0, document.body.scrollHeight);</script>", unsafe_allow_html=True)
-
-# ========================
-# USER INPUT AT THE BOTTOM
-# ========================
-query = st.text_input("💬 Type your question:", key=f"input_{len(st.session_state.messages)}")
+query = st.text_input("💬 Enter your question:")
 
 if query:
-    # Save user question
+    # Save user message
     st.session_state.messages.append({"role": "user", "content": query})
-
+    
     with st.spinner("🔍 Searching for answers..."):
         results = db.similarity_search_with_relevance_scores(query, k=3)
 
@@ -134,14 +109,21 @@ if query:
             prompt = prompt_template.format(context=context_text, question=query)
             response_text = model.predict(prompt)
             st.session_state.messages.append({"role": "assistant", "content": response_text})
-            st.session_state.last_sources = results
-
-    # st.rerun()  # Refresh page to keep chat stacked
+            st.session_state.last_sources = results  # Save sources
 
 # ========================
-# SOURCES (only for latest answer)
+# DISPLAY CHAT MESSAGES
 # ========================
-if st.session_state.last_sources:
+for msg in st.session_state.messages:
+    if msg["role"] == "user":
+        st.markdown(f"<div class='user-bubble'><b>You:</b> {msg['content']}</div>", unsafe_allow_html=True)
+    else:
+        st.markdown(f"<div class='ai-bubble'><b>AI:</b> {msg['content']}</div>", unsafe_allow_html=True)
+
+# ========================
+# SOURCES (if available)
+# ========================
+if "last_sources" in st.session_state:
     with st.expander("📄 View sources from scientific papers"):
         for i, (doc, score) in enumerate(st.session_state.last_sources):
             st.markdown(f"""
