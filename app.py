@@ -136,7 +136,7 @@ if query:
             st.session_state.messages.append({"role": "assistant", "content": response_text})
             st.session_state.last_sources = results
 
-    st.rerun()  # Refresh page to keep chat stacked
+    # st.rerun()  # Refresh page to keep chat stacked
 
 # ========================
 # SOURCES (only for latest answer)
