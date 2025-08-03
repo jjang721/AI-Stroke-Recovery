@@ -25,7 +25,10 @@ Answer my question: {question}
 # MODEL & DB INITIALIZATION
 # ========================
 embeddings = OpenAIEmbeddings()
-db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embeddings)
+db = Chroma(
+    persist_directory=None,  # Use in-memory mode, no SQLite required
+    embedding_function=embeddings
+)
 model = ChatOpenAI()
 prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
 
