@@ -8,9 +8,6 @@ from dotenv import load_dotenv, find_dotenv
 # ENVIRONMENT SETUP
 # ========================
 
-__import__('pysqlite3')  # Import the upgraded sqlite package
-import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 dotenv_path = find_dotenv()
 load_dotenv(dotenv_path, override=True)
 
