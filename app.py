@@ -7,6 +7,9 @@ from langchain_community.vectorstores import Chroma
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 from dotenv import load_dotenv, find_dotenv
+from langchain_community.document_loaders import UnstructuredMarkdownLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+import glob
 
 # ========================
 # ENVIRONMENT SETUP
@@ -95,6 +98,25 @@ st.markdown("<p style='text-align:center;color:#555;'>Ask a question about strok
 # ========================
 if "messages" not in st.session_state:
     st.session_state.messages = []
+
+# ========================
+# LOAD & BUILD VECTOR DB IN MEMORY (for Streamlit Cloud)
+# ========================
+if "db_built" not in st.session_state:
+    # Load all markdown files from data/science/
+    md_files = glob.glob("data/science/*.md")
+    documents = []
+    for file in md_files:
+        loader = UnstructuredMarkdownLoader(file)
+        documents.extend(loader.load())
+    # Split text into chunks
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+    docs = text_splitter.split_documents(documents)
+    # Create DB in memory
+    db = Chroma.from_documents(docs, embeddings)
+    st.session_state.db_built = True
+else:
+    db = Chroma(embedding_function=embeddings)
 
 # ========================
 # USER INPUT
