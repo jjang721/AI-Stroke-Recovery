@@ -1,6 +1,6 @@
-StrokeRehab.ai is an AI-driven rehabilitation assistant designed to provide personalized, evidence-based stroke recovery guidance. It leverages LangChain, OpenAI embeddings, and a Chroma vector database to retrieve relevant insights from over 50+ peer-reviewed scientific documents.
+My Rehab Buddy is an AI-driven rehabilitation assistant designed to provide personalized, evidence-based stroke recovery guidance. It leverages LangChain, OpenAI embeddings, and a Chroma vector database to retrieve relevant insights from over 50+ peer-reviewed scientific documents.
 
-This project bridges cutting-edge NLP with healthcare accessibility, enabling stroke survivors and caregivers to access trusted recovery information in real-time.
+I created this project because my mom had a stroke two years ago, and I wanted to use my programming skills to help other people who have gone through similar exxperiences as my family. By creating this application, I was able to learn new technologies and further my interets in AI. This project bridges cutting-edge NLP with healthcare accessibility, enabling stroke survivors and caregivers to access trusted recovery information in real-time. 
 
 Features
 1. AI Chat Interface – Conversational assistant for stroke recovery questions
