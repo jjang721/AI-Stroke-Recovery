@@ -1,7 +1,7 @@
 import streamlit as st
-__import__('pysqlite3')
+
 import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
 
 from langchain_community.vectorstores import Chroma
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
@@ -29,8 +29,9 @@ Answer my question: {question}
 # MODEL & DB INITIALIZATION
 # ========================
 embeddings = OpenAIEmbeddings()
+CHROMA_PATH = "chroma"  # Path to existing DB
 db = Chroma(
-    persist_directory=None,  # Use in-memory mode, no SQLite required
+    persist_directory=CHROMA_PATH,
     embedding_function=embeddings
 )
 model = ChatOpenAI()
