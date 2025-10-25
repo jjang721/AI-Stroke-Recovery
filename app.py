@@ -23,9 +23,8 @@ Using this context, find an answer!:
 Answer my question: {question}
 """
 
-# ========================
-# MODEL & DB INITIALIZATION
-# ========================
+
+# Model init
 embeddings = OpenAIEmbeddings()
 CHROMA_PATH = "chroma"  # Path to existing DB
 db = Chroma(
@@ -35,9 +34,7 @@ db = Chroma(
 model = ChatOpenAI()
 prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
 
-# ========================
-# STREAMLIT PAGE CONFIG
-# ========================
+# streamlist set up
 st.set_page_config(
     page_title="🧠 Stroke Recovery Assistant", 
     page_icon="🧠", 
@@ -45,9 +42,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# ========================
-# ENHANCED CUSTOM STYLES
-# ========================
+# ui styles 
 st.markdown("""
 <style>
     /* Import modern font */
@@ -271,24 +266,18 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ========================
-# HEADER
-# ========================
+# header
 st.markdown("<h1>🧠 Stroke Recovery Assistant</h1>", unsafe_allow_html=True)
 st.markdown("<p class='subtitle'>Ask questions about stroke rehabilitation backed by scientific research</p>", unsafe_allow_html=True)
 
-# ========================
-# SESSION STATE FOR CHAT
-# ========================
+# messages processor
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
 if "processing" not in st.session_state:
     st.session_state.processing = False
 
-# ========================
-# CHAT DISPLAY CONTAINER
-# ========================
+# chat box
 chat_html = "<div class='chat-container'>"
 if len(st.session_state.messages) == 0:
     chat_html += """
@@ -310,9 +299,8 @@ else:
 
 chat_html += "</div>"
 st.markdown(chat_html, unsafe_allow_html=True)
-# ========================
-# USER INPUT CONTAINER
-# ========================
+
+# user input 
 st.markdown("<div class='input-container'>", unsafe_allow_html=True)
 
 with st.form(key="chat_form", clear_on_submit=True):
@@ -322,15 +310,12 @@ with st.form(key="chat_form", clear_on_submit=True):
 st.markdown("</div>", unsafe_allow_html=True)
 
 
-# ========================
-# QUERY PROCESSING
-# ========================
+# process query 
 if submit and query and not st.session_state.processing:
     st.session_state.processing = True
     
     # Save user message
     st.session_state.messages.append({"role": "user", "content": query})
-    
     with st.spinner("🔍 Searching scientific literature..."):
         results = db.similarity_search_with_relevance_scores(query, k=3)
 
@@ -344,10 +329,12 @@ if submit and query and not st.session_state.processing:
             st.session_state.messages.append({"role": "assistant", "content": response_text})
 
 
-            st.session_state.last_sources = results  # Save sources
+            st.session_state.last_sources = results  
     
     st.session_state.processing = False
     st.rerun()
+
+# show evidence from documents 
 
 if "last_sources" in st.session_state and len(st.session_state.last_sources) > 0:
     with st.expander("📄 View sources from scientific papers"):
